@@ -9,13 +9,35 @@ namespace UnityStandardAssets.Vehicles.Car
     {
         private CarController m_Car; // the car controller we want to use
 
+        //≥ı ºªØ…„œÒÕ∑
+        private GameObject firstCamera, thirdCamera;
+        private bool isFirstPersonView = false;
 
         private void Awake()
         {
             // get the car controller
             m_Car = GetComponent<CarController>();
+            thirdCamera = GameObject.Find("ThirdCamera");
+            firstCamera = GameObject.Find("FirstCamera");
         }
 
+        private void Update()
+        {//V«–ªª…„œÒÕ∑
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                isFirstPersonView = !isFirstPersonView;
+            }
+            if (isFirstPersonView)
+            {
+                firstCamera.SetActive(true);
+                thirdCamera.SetActive(false);
+            }
+            else
+            {
+                firstCamera.SetActive(false);
+                thirdCamera.SetActive(true);
+            }
+        }
 
         private void FixedUpdate()
         {

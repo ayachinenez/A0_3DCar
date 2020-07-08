@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace UnityStandardAssets.Vehicles.Car
@@ -55,6 +55,18 @@ namespace UnityStandardAssets.Vehicles.Car
         public float Revs { get; private set; }
         public float AccelInput { get; private set; }
 
+        //车灯
+        public GameObject leftLight;
+        public GameObject rightLight;
+        private Light leftLightColor;
+        private Light rightLightColor;
+
+        public float gapTime; //闪烁的间隔时间
+        private float temp;
+        bool IsDisplay = true;
+
+        private MeshRenderer BoxColliderClick;
+
         // Use this for initialization
         private void Start()
         {
@@ -69,6 +81,10 @@ namespace UnityStandardAssets.Vehicles.Car
 
             m_Rigidbody = GetComponent<Rigidbody>();
             m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl*m_FullTorqueOverAllWheels);
+
+            //初始化尾灯灯光变量
+            leftLightColor = leftLight.GetComponent<Light>();
+            rightLightColor = rightLight.GetComponent<Light>();
         }
 
 
@@ -143,6 +159,19 @@ namespace UnityStandardAssets.Vehicles.Car
             BrakeInput = footbrake = -1*Mathf.Clamp(footbrake, -1, 0);
             handbrake = Mathf.Clamp(handbrake, 0, 1);
 
+            //刹车亮尾灯
+            if(BrakeInput > 0f )
+            {
+                leftLightColor.color = Color.red;
+                rightLightColor.color = Color.red;
+            }
+            else
+            {
+                //开车亮黄色
+                leftLightColor.color = Color.yellow;
+                rightLightColor.color = Color.yellow;
+            }
+
             //Set the steer on the front wheels.
             //Assuming that wheels 0 and 1 are the front wheels.
             m_SteerAngle = steering*m_MaximumSteerAngle;
@@ -171,6 +200,64 @@ namespace UnityStandardAssets.Vehicles.Car
             TractionControl();
         }
 
+        private void Update()
+        {
+            Effect();
+        }
+
+        public void Effect()
+        {
+            temp += Time.deltaTime;
+            if (Input.GetKey(KeyCode.D))
+            {
+                if(temp >= gapTime)
+
+                {
+                    if (IsDisplay)
+                    {
+                        rightLight.gameObject.SetActive(false);
+                        IsDisplay = false;
+                        temp = 0;
+                    }
+                    else
+                    {
+                        rightLight.gameObject.SetActive(true);
+                        IsDisplay = true;
+                        temp = 0;
+                    }
+                }
+            }
+            else
+            {
+                rightLight.gameObject.SetActive(true);
+            }
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                if (temp >= gapTime)
+
+                {
+                    if (IsDisplay)
+                    {
+                        leftLight.gameObject.SetActive(false);
+                        IsDisplay = false;
+                        temp = 0;
+                    }
+                    else
+                    {
+                        leftLight.gameObject.SetActive(true);
+                        IsDisplay = true;
+                        temp = 0;
+                    }
+                }
+            }
+            else
+            {
+                leftLight.gameObject.SetActive(true);
+            }
+        }
+
+            
 
         private void CapSpeed()
         {
