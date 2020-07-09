@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -9,7 +9,7 @@ namespace UnityStandardAssets.Vehicles.Car
     {
         private CarController m_Car; // the car controller we want to use
 
-        //³õÊ¼»¯ÉãÏñÍ·
+        //åˆå§‹åŒ–æ‘„åƒå¤´
         private GameObject firstCamera, thirdCamera;
         private bool isFirstPersonView = false;
 
@@ -22,7 +22,7 @@ namespace UnityStandardAssets.Vehicles.Car
         }
 
         private void Update()
-        {//VÇĞ»»ÉãÏñÍ·
+        {//Våˆ‡æ¢æ‘„åƒå¤´
             if (Input.GetKeyDown(KeyCode.V))
             {
                 isFirstPersonView = !isFirstPersonView;

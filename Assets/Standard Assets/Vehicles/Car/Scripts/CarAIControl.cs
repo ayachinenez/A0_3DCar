@@ -1,5 +1,4 @@
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace UnityStandardAssets.Vehicles.Car
@@ -45,6 +44,10 @@ namespace UnityStandardAssets.Vehicles.Car
         private float m_AvoidPathOffset;          // direction (-1 or 1) in which to offset path to avoid other car, whilst avoiding
         private Rigidbody m_Rigidbody;
 
+        //路点数
+        private GameObject[] poss = new GameObject[70];
+        private int nextPos = 0;
+
 
         private void Awake()
         {
@@ -62,9 +65,15 @@ namespace UnityStandardAssets.Vehicles.Car
         {
             if (m_Target == null || !m_Driving)
             {
-                // Car should not be moving,
-                // use handbrake to stop
-                m_CarController.Move(0, 0, -1f, 1f);
+                if(nextPos <= 70)
+                {
+                    SetTarget(poss[nextPos].transform);
+                    nextPos++;
+                }
+                else
+                {
+                    m_CarController.Move(0, 0, -1f, 1f);
+                }
             }
             else
             {
@@ -211,6 +220,28 @@ namespace UnityStandardAssets.Vehicles.Car
             }
         }
 
+        void Start()
+        {
+            GetPoss();
+        }
+
+        private void GetPoss()
+        {
+            int a = 101;
+            while (a <= 170)
+            {
+                GameObject g = GameObject.Find("poss" + a);
+                if(g != null)
+                {
+                    poss[a - 101] = g;
+                    a++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
 
         public void SetTarget(Transform target)
         {
