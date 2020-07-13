@@ -160,7 +160,7 @@ namespace UnityStandardAssets.Vehicles.Car
             handbrake = Mathf.Clamp(handbrake, 0, 1);
 
             //刹车亮尾灯
-            if(BrakeInput > 0f)
+            if(BrakeInput > 0f )
             {
                 leftLightColor.color = Color.red;
                 rightLightColor.color = Color.red;
@@ -170,55 +170,6 @@ namespace UnityStandardAssets.Vehicles.Car
                 //开车亮黄色
                 leftLightColor.color = Color.yellow;
                 rightLightColor.color = Color.yellow;
-            }
-
-            temp += Time.deltaTime;
-            if (steering > 0f)
-            {
-                if (temp >= gapTime)
-
-                {
-                    if (IsDisplay)
-                    {
-                        rightLight.gameObject.SetActive(false);
-                        IsDisplay = false;
-                        temp = 0;
-                    }
-                    else
-                    {
-                        rightLight.gameObject.SetActive(true);
-                        IsDisplay = true;
-                        temp = 0;
-                    }
-                }
-            }
-            else
-            {
-                rightLight.gameObject.SetActive(true);
-            }
-
-            if (steering < 0f)
-            {
-                if (temp >= gapTime)
-
-                {
-                    if (IsDisplay)
-                    {
-                        leftLight.gameObject.SetActive(false);
-                        IsDisplay = false;
-                        temp = 0;
-                    }
-                    else
-                    {
-                        leftLight.gameObject.SetActive(true);
-                        IsDisplay = true;
-                        temp = 0;
-                    }
-                }
-            }
-            else
-            {
-                leftLight.gameObject.SetActive(true);
             }
 
             //Set the steer on the front wheels.
@@ -256,7 +207,54 @@ namespace UnityStandardAssets.Vehicles.Car
 
         public void Effect()
         {
+            temp += Time.deltaTime;
+            if (Input.GetKey(KeyCode.D))
+            {
+                if(temp >= gapTime)
 
+                {
+                    if (IsDisplay)
+                    {
+                        rightLight.gameObject.SetActive(false);
+                        IsDisplay = false;
+                        temp = 0;
+                    }
+                    else
+                    {
+                        rightLight.gameObject.SetActive(true);
+                        IsDisplay = true;
+                        temp = 0;
+                    }
+                }
+            }
+            else
+            {
+                rightLight.gameObject.SetActive(true);
+            }
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                if (temp >= gapTime)
+
+                {
+                    if (IsDisplay)
+                    {
+                        leftLight.gameObject.SetActive(false);
+                        IsDisplay = false;
+                        temp = 0;
+                    }
+                    else
+                    {
+                        leftLight.gameObject.SetActive(true);
+                        IsDisplay = true;
+                        temp = 0;
+                    }
+                }
+            }
+            else
+            {
+                leftLight.gameObject.SetActive(true);
+            }
         }
 
             
